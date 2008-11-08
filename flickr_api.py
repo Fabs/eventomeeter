@@ -8,10 +8,10 @@ class Photo:
       self.url = url
    
    def relevant_content(self):
-      pass
+      return ""
    
    def __str__(self):
-      "text: %s tags: %s"%(self.text,self.tags)
+      return "text: %s tags: %s"%(self.text,self.tags)
       
    __repr__ = __str__
    
