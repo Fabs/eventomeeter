@@ -2,6 +2,20 @@ import flickrapi
 from flickr_keys import *
 import sys
 
+class Photo:
+   def __init__(self,url,tags):
+      self.tags = tags
+      self.url = url
+   
+   def relevant_content(self):
+      pass
+   
+   def __str__(self):
+      "text: %s tags: %s"%(self.text,self.tags)
+      
+   __repr__ = __str__
+   
+
 def authFlickr(format='etree'):
     """login no flickr"""
     f = flickrapi.FlickrAPI(webapi,secret=websecret,format=format)
@@ -15,5 +29,4 @@ def getFlickers(xml='etree'):
 
     
 if __name__=='__main__':
-    recent = getFlickers()
-    print recent
+    print getFlickers()
