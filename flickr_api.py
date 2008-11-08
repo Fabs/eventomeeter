@@ -22,11 +22,13 @@ def authFlickr(format='etree'):
     return f
 
 def getFlickers(xml='etree'):
-    """retorna o XML das fotos"""
     flickr = authFlickr()
     recent = flickr.photos_getrecent(user_id=userid, per_page='1',format='json')
+    url="""http://farm.static.flickr.com/server/id_secret.jpg"""
+    print "URL:" + url
     return recent
-
+  
     
 if __name__=='__main__':
     print getFlickers()
+
