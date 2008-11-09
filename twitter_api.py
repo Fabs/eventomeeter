@@ -1,4 +1,5 @@
 import twitter
+from content_analyst_api import *
 
 '''
 IDEAS
@@ -32,4 +33,5 @@ def getTwits():
     return twits
    
 if __name__ == '__main__':
-   print getTwits()
+    dummy=getTwits()
+    extractKeyWords(dummy)
