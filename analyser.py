@@ -6,9 +6,9 @@ def dig_web():
     twits = getTwits()
     photos = getFlickers()
     words = []
-    for twit in twits:
-        twit.content_tags = extractKeyWords(twit)
-        words.append(twit)
+#    for twit in twits:
+#        twit.content_tags = extractKeyWords(twit)
+#        words.append(twit)
     for photo in photos:
         photo.content_tags = photo.tags
         words.append(photo)

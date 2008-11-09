@@ -28,14 +28,15 @@ class Cluster:
 def create_clusters(contextables, clusters, tags):
     new_clusters = [ Cluster(cluster.tags.union(set([tag]))) for cluster in clusters 
                            for tag in tags if tag not in cluster ]
+
     for contextable in contextables:
         for cluster in new_clusters:
             if contextable.belongs_to(cluster):
                 cluster.add(contextable)
+
     return new_clusters
 
 def merge_clusters(contextables, number=5):
-    contextables = contextables[:3]
     tags = order_tags(contextables)
     clusters = [ Cluster(set([tag])) for tag in tags ]
     new_clusters = create_clusters(contextables, clusters, tags)

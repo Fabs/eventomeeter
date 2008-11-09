@@ -18,7 +18,7 @@ class Photo(Contextable):
     def __repr__(self):
         return "Flick <%s>"%(self.tags)
 
-    __repr__ = __str__
+    __str__ = __repr__
 
 def authFlickr(format='etree'):
     """login no flickr"""
