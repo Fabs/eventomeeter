@@ -1,6 +1,4 @@
 import twitter
-from content_analyst_api import *
-
 from contextable import Contextable
 
 '''
@@ -35,5 +33,5 @@ def getTwits():
     return twits
    
 if __name__ == '__main__':
-    dummy=getTwits()
-    extractKeyWords(dummy)
+    getTwits()
+    
