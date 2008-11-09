@@ -55,9 +55,10 @@ ctxs = [Contextable("python, brhackday, eventomeeter"),
     # 4
     Contextable("brhackday, senac"),
     Contextable("brhackday, senac"),
+    # 2
     Contextable("brhackday, senac, python"),
     Contextable("brhackday, senac, python"),
-    # 4
+    # 2
 ]
 
 
@@ -65,8 +66,7 @@ import unittest
 
 class TestCluster(unittest.TestCase):
     def test_brhackday_senac_python_clustering(self):
-        tags = order_tags(ctxs)
-        clusters = merge_clusters(ctxs, [ Cluster(set([tag])) for tag in tags ], tags, 3)
+        clusters = merge_clusters(ctxs, 3)
         cluster = Cluster(set(["brhackday", "senac", "python"]))
         for c in clusters:
             if c == cluster:
@@ -77,8 +77,7 @@ class TestCluster(unittest.TestCase):
         self.assertEquals(len(c), 8)
 
     def test_brhackday_eventomeeter_clustering(self):
-        tags = order_tags(ctxs)
-        clusters = merge_clusters(ctxs, [ Cluster(set([tag])) for tag in tags ], tags, 2)
+        clusters = merge_clusters(ctxs, 2)
         cluster = Cluster(set(["brhackday", "eventomeeter"]))
         for c in clusters:
             if c == cluster:
@@ -89,8 +88,7 @@ class TestCluster(unittest.TestCase):
         self.assertEquals(len(c), 27, c.contextables)
 
     def test_php_ruby_clustering(self):
-        tags = order_tags(ctxs)
-        clusters = merge_clusters(ctxs, [ Cluster(set([tag])) for tag in tags ], tags, 2)
+        clusters = merge_clusters(ctxs, 2)
         cluster = Cluster(set(["php", "ruby"]))
         for c in clusters:
             if c == cluster:

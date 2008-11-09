@@ -1,11 +1,13 @@
 import twitter
 
+from contextable import Contextable
+
 '''
 IDEAS
-   Follow tyniurl no twitter
+   Follow tinyurl no twitter
 '''
 
-class Twit:
+class Twit(Contextable):
     def __init__(self,text):
         self.text = text
         self.content_tags = {}
@@ -14,7 +16,7 @@ class Twit:
         return self.text
 
     def __str__(self):
-        return "'%s'"%(self.text)
+        return "Twit <%s>"%(self.text)
 
     __repr__ = __str__
 

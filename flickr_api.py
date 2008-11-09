@@ -4,7 +4,9 @@ import flickrapi
 from flickr_keys import *
 import time
 
-class Photo:
+from contextable import Contextable
+
+class Photo(Contextable):
     def __init__(self,url,tags):
         self.tags = tags
         self.url = url
@@ -13,8 +15,8 @@ class Photo:
     def relevant_content(self):
         return ""
 
-    def __str__(self):
-        return "text: %s tags: %s"%(self.url,self.tags)
+    def __repr__(self):
+        return "Flick <%s>"%(self.tags)
 
     __repr__ = __str__
 
