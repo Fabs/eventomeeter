@@ -87,6 +87,17 @@ class TestCluster(unittest.TestCase):
 
         self.assertEquals(len(c), 27, c.contextables)
 
+    def test_php_clustering(self):
+        clusters = merge_clusters(ctxs, 1)
+        cluster = Cluster(set(["php"]))
+        for c in clusters:
+            if c == cluster:
+                break
+        else:
+            self.fail("Cluster not found!")
+
+        self.assertEquals(len(c), 2, c.contextables)
+
     def test_php_ruby_clustering(self):
         clusters = merge_clusters(ctxs, 2)
         cluster = Cluster(set(["php", "ruby"]))
