@@ -37,7 +37,7 @@ def getFlickers():
     tags = 0
     photos = []
     flickr = authFlickr()
-    recent = flickr.photos_getrecent(user_id=userid, per_page='500',format='json',extras='tags')
+    recent = flickr.photos_search(tags="brhackday08", per_page='500',format='json',extras='tags')
     recent_json = get_json(recent)
     #print "Down: "+str(len(recent_json['photos']['photo']))
     for photo in recent_json['photos']['photo']:
@@ -56,4 +56,4 @@ def getFlickers():
 
 if __name__=='__main__':
     while True:
-        getFlickers()
+        print len(getFlickers())
