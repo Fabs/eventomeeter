@@ -6,10 +6,6 @@ import time, cPickle
 
 from contextable import Contextable
 
-# type
-# url
-# user
-
 class Photo(Contextable):
     def __init__(self, url, tags, username, lastupdate):
         self.tags = tags
@@ -39,7 +35,6 @@ def get_json(text):
     return json
 
 def getFlickers():
-    enter_time = time.time()
     tags = 0
     photos = []
     flickr = authFlickr()
