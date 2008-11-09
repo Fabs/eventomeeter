@@ -33,19 +33,17 @@ def get_json(text):
     return json
 
 def getFlickers():
-    enter_time = time.time()
     tags = 0
     photos = []
     flickr = authFlickr()
-    recent = flickr.photos_search(user_id=userid, per_page='500',format='json', tag='brhackday')
+    recent = flickr.photos_search(tags='brhackday',per_page='500',format='json',extras="tags")
     #recent = flickr.photos_getrecent(user_id=userid, per_page='500',format='json',extras='tags')
     recent_json = get_json(recent)
     #print "Down: "+str(len(recent_json['photos']['photo']))
-    print recent_json
     for photo in recent_json['photos']['photo']:
        tag_list = [tag for tag in photo['tags'].split()]
        tags += len(tag_list)
-       if not tag_list: continue
+       #print photo['dateupload']    
        photo_object = Photo(
             ("http://farm%(farm)s.static.flickr.com/%(server)s/%(id)s_%(secret)s.jpg" %     photo),
             tag_list
@@ -57,5 +55,4 @@ def getFlickers():
     return photos
 
 if __name__=='__main__':
-    while True:
-        print getFlickers()
+    print len(getFlickers())
