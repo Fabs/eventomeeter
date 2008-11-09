@@ -9,9 +9,9 @@ def dig_web():
     for twit in twits:
         twit.content_tags = extractKeyWords(twit)
         words.append(twit)
-    for photo in photos:
-        photo.content_tags = photo.tags
-        words.append(photo)
+    #for photo in photos:
+    #    photo.content_tags = photo.tags
+    #    words.append(photo)
     return words
 
 if __name__ == "__main__":
