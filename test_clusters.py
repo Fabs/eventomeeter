@@ -1,4 +1,4 @@
-from clouds import create_clouds, Contextable
+from clusters import merge_clusters, Cluster, order_tags
 
 class Contextable:
     def __init__(self, tags):
@@ -24,7 +24,7 @@ ctxs = [Contextable("python, brhackday, eventomeeter"),
     Contextable("python, brhackday, eventomeeter"),
     Contextable("python, brhackday, eventomeeter"),
     Contextable("python, brhackday, eventomeeter"),
-    #  13
+    #  12
     Contextable("brhackday, eventomeeter"),
     Contextable("brhackday, eventomeeter"),
     Contextable("brhackday, eventomeeter"),
@@ -53,10 +53,52 @@ ctxs = [Contextable("python, brhackday, eventomeeter"),
     Contextable("python"),
     Contextable("python"),
     # 4
+    Contextable("brhackday, senac"),
+    Contextable("brhackday, senac"),
+    Contextable("brhackday, senac, python"),
+    Contextable("brhackday, senac, python"),
+    # 4
 ]
 
 
 import unittest
 
 class TestCluster(unittest.TestCase):
-    def test_
+    def test_brhackday_senac_python_clustering(self):
+        tags = order_tags(ctxs)
+        clusters = merge_clusters(ctxs, [ Cluster(set([tag])) for tag in tags ], tags, 3)
+        cluster = Cluster(set(["brhackday", "senac", "python"]))
+        for c in clusters:
+            if c == cluster:
+                break
+        else:
+            self.fail("Cluster not found!")
+
+        self.assertEquals(len(c), 8)
+
+    def test_brhackday_eventomeeter_clustering(self):
+        tags = order_tags(ctxs)
+        clusters = merge_clusters(ctxs, [ Cluster(set([tag])) for tag in tags ], tags, 2)
+        cluster = Cluster(set(["brhackday", "eventomeeter"]))
+        for c in clusters:
+            if c == cluster:
+                break
+        else:
+            self.fail("Cluster not found!")
+
+        self.assertEquals(len(c), 27, c.contextables)
+
+    def test_php_ruby_clustering(self):
+        tags = order_tags(ctxs)
+        clusters = merge_clusters(ctxs, [ Cluster(set([tag])) for tag in tags ], tags, 2)
+        cluster = Cluster(set(["php", "ruby"]))
+        for c in clusters:
+            if c == cluster:
+                break
+        else:
+            self.fail("Cluster not found!")
+
+        self.assertEquals(len(c), 3)
+
+
+unittest.main()

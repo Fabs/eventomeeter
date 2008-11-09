@@ -14,6 +14,15 @@ class Cluster:
     def __contains__(self, item):
         return item in self.tags
 
+    def __eq__(self, other):
+        return self.tags == other.tags
+    
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __len__(self):
+        return len(self.contextables)
+
 
 def create_clusters(contextables, clusters, tags):
     new_clusters = [ Cluster(cluster.tags.union(set([tag]))) for cluster in clusters 
@@ -22,6 +31,13 @@ def create_clusters(contextables, clusters, tags):
         for cluster in new_clusters:
             if contextable.belongs_to(cluster):
                 cluster.add(contextable)
+    return new_clusters
+
+def merge_clusters(contextables, clusters, tags, number=5):
+    new_clusters = create_clusters(contextables, clusters, tags)
+
+    for i in range(number-2):
+        new_clusters = create_clusters(contextables, new_clusters, tags)
     return new_clusters
 
 def order_tags(contextables):
@@ -40,7 +56,4 @@ def sort_dict_by_value(d, limit):
     backitems=[ [v[1],v[0]] for v in items]
     backitems.sort()
     return [ item[1] for item in reversed(backitems[-limit:]) ]
-
-ctxs = order_tags(ctx)
-print create_clusters(ctx, [ Cluster(set([tag])) for tag in ctxs ], ctxs)
 
