@@ -1,9 +1,18 @@
 from content_analyst_api import extractKeyWords
 from twitter_api import getTwits
+from flickr_api import getFlickers
 
-twits = getTwits()
-words = []
-for twit in twits:
-   words.append(extractKeyWords(twit))
+def dig_web():
+    twits = getTwits()
+    photos = getFlickers()
+    words = []
+    for twit in twits:
+        twit.content_tags = extractKeyWords(twit)
+        words.append(twit)
+    for photo in photos:
+        photo.content_tags = photo.tags
+        words.append(photo)
+    return words
 
-print words
+if __name__ == "__main__":
+    print dig_web()
