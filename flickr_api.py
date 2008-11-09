@@ -2,21 +2,27 @@ import sys
 import simplejson
 import flickrapi
 from flickr_keys import *
-import time
+import time, cPickle
 
 from contextable import Contextable
 
+# type
+# url
+# user
+
 class Photo(Contextable):
-    def __init__(self,url,tags):
+    def __init__(self, url, tags, username, lastupdate):
         self.tags = tags
         self.url = url
+        self.username = username
         self.content_tags = {}
+        self.lastupdate = lastupdate
 
     def relevant_content(self):
         return ""
 
     def __repr__(self):
-        return "Flick <%s>"%(self.tags)
+        return "Flick <%s> <%s> <%s> <%s>"%(self.tags, self.url, self.username, self.lastupdate)
 
     __str__ = __repr__
 
@@ -37,23 +43,18 @@ def getFlickers():
     tags = 0
     photos = []
     flickr = authFlickr()
-    recent = flickr.photos_search(tags="brhackday08", per_page='500',format='json',extras='tags')
+    recent = flickr.photos_search(tags="brhackday08", 
+                                  per_page='500',format='json',
+                                  extras='tags,last_update,owner_name')
     recent_json = get_json(recent)
-    #print "Down: "+str(len(recent_json['photos']['photo']))
     for photo in recent_json['photos']['photo']:
        tag_list = [tag for tag in photo['tags'].split()]
        tags += len(tag_list)
-       if not tag_list: continue
        photo_object = Photo(
-            ("http://farm%(farm)s.static.flickr.com/%(server)s/%(id)s_%(secret)s.jpg" %     photo),
-            tag_list
-            )
+        ("http://farm%(farm)s.static.flickr.com/%(server)s/%(id)s_%(secret)s.jpg" %     photo),
+        tag_list,
+        photo['ownername'],
+        photo['lastupdate'],
+       )
        photos.append(photo_object)
-    #print (time.time() - enter_time) / 60
-    #print "Photos: "+str(len(photos))
-    #print "Tag: "+str(tags)
     return photos
-
-if __name__=='__main__':
-    while True:
-        print len(getFlickers())
