@@ -1,4 +1,4 @@
-import flickrapi
+import flick api
 from flickr_keys import *
 import sys
 

@@ -11,8 +11,6 @@ class Dummy():
       return "dummy: %s"%(self.dummy)
 
    __repr__ = __str__
-   
-
 
 def extractKeyWords(contextable):
    dic_params ={
