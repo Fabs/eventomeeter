@@ -35,7 +35,6 @@ class Cluster:
 
 
 def create_clusters(contextables, clusters, tags):
-    print "Start creating new clusters"
     new_clusters = []
     for cluster in clusters:
         for tag in tags:
@@ -43,20 +42,23 @@ def create_clusters(contextables, clusters, tags):
                 tag_cluster = CLUSTERS[frozenset([tag])]
                 new_cluster = Cluster(cluster.tags.union(tag_cluster.tags))
                 new_cluster.populate(cluster.contextables.union(tag_cluster.contextables))
-                new_clusters.append(new_cluster)
+                if new_cluster.contextables:
+                    new_clusters.append(new_cluster)
     return list(sorted(new_clusters, key=lambda i: len(i)))
 
 def merge_clusters(contextables, number=5):
-    print "Merging"
-    tags = order_tags(contextables)[:160]
+    tags = order_tags(contextables)[:260]
     new_clusters = []
-    print "First clusters"
     for tag in tags:
         cluster = Cluster(frozenset([tag]))
         cluster.populate(contextables)
         new_clusters.append(cluster)
     for i in range(number-1):
-        new_clusters = create_clusters(contextables, new_clusters, tags)[:160/(i+2)]
+        nclusters = create_clusters(contextables, new_clusters, tags)[:260/(i+2)]
+        if nclusters:
+            new_clusters = nclusters
+        else:
+            return new_clusters
     return new_clusters
 
 def order_clusters(clusters):
