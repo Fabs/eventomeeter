@@ -1,6 +1,5 @@
-CLUSTERS = {}
-
 class Cluster:
+    CLUSTERS = {}
     def __init__(self, tags=None):
         if tags is None:
             tags = frozenset()
@@ -8,7 +7,11 @@ class Cluster:
             tags = frozenset(tags)
         self.tags = frozenset(tags)
         self.contextables = set()
-        CLUSTERS[self.tags] = self
+        self.CLUSTERS[self.tags] = self
+
+    @classmethod
+    def get(cls, tags):
+        return cls.CLUSTERS[frozenset(tags)]
 
     def add(self, *args):
         self.contextables.add(*args)
@@ -39,7 +42,7 @@ def create_clusters(contextables, clusters, tags):
     for cluster in clusters:
         for tag in tags:
             if tag not in cluster:
-                tag_cluster = CLUSTERS[frozenset([tag])]
+                tag_cluster = Cluster.get([tag])
                 new_cluster = Cluster(cluster.tags.union(tag_cluster.tags))
                 new_cluster.populate(cluster.contextables.union(tag_cluster.contextables))
                 if new_cluster.contextables:
@@ -47,14 +50,14 @@ def create_clusters(contextables, clusters, tags):
     return list(sorted(new_clusters, key=lambda i: len(i)))
 
 def merge_clusters(contextables, number=5):
-    tags = order_tags(contextables)[:260]
+    tags = order_tags(contextables)
     new_clusters = []
     for tag in tags:
         cluster = Cluster(frozenset([tag]))
         cluster.populate(contextables)
         new_clusters.append(cluster)
     for i in range(number-1):
-        nclusters = create_clusters(contextables, new_clusters, tags)[:260/(i+2)]
+        nclusters = create_clusters(contextables, new_clusters, tags)
         if nclusters:
             new_clusters = nclusters
         else:
@@ -62,22 +65,18 @@ def merge_clusters(contextables, number=5):
     return new_clusters
 
 def order_clusters(clusters):
-    clusters = {}
     for cluster in clusters:
         for tag in contextable.content_tags:
-            tag = tag.strip()
             if tags.has_key(tag):
                 tags[tag] += 1
             else:
                 tags[tag] = 1
     return sort_dict_by_value(tags)
 
-
 def order_tags(contextables):
     tags = {}
     for contextable in contextables:
         for tag in contextable.content_tags:
-            tag = tag.strip()
             if tags.has_key(tag):
                 tags[tag] += 1
             else:
