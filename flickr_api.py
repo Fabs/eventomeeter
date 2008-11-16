@@ -4,9 +4,7 @@ import flickrapi
 from flickr_keys import *
 import time, cPickle
 
-from contextable import Contextable
-
-class Photo(Contextable):
+class Photo(object):
     def __init__(self, url, tags, username, lastupdate):
         self.tags = tags
         self.url = url
@@ -39,7 +37,7 @@ def getFlickers():
     photos = []
     flickr = authFlickr()
     recent = flickr.photos_search(tags="brhackday08", 
-                                  per_page='500',format='json',
+                                  per_page='20',format='json',
                                   extras='tags,last_update,owner_name')
     recent_json = get_json(recent)
     for photo in recent_json['photos']['photo']:

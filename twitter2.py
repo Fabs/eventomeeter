@@ -2,8 +2,6 @@ from urllib import urlopen
 import datetime
 import pickle
 import time
-from flickr_api import getFlickers
-import webbrowser
 
 serie = 0
 while (True):
@@ -36,70 +34,38 @@ while (True):
             #if (tempo_passado <
             contador += 1
         n+=1
-    
-    photos = getFlickers()
 
-    photos_tratadas = []
-    contador = 0
-    print "len(photos) = " + str(len(photos))
-    for photo in photos:
-        #import pdb
-        #pdb.set_trace()
-        if (int(photo.lastupdate) - time.time()+ 7200 < 3600):
-            photos_tratadas.append({'type': 'flickr', 'url': photo.url, 'user': photo.username, 'tags': photo.tags})
-            contador += 1
-            if contador < 30:
-                print "%d" % (int(photo.lastupdate) - time.time())
-            
-            
-    print "contador flickr recentes=%d" % contador
-    
     print "posts_na_ultima_hora = %d" % posts_na_ultima_hora
     if (posts_na_ultima_hora >= 0):
         saida_arduino = 1
 
-    if (posts_na_ultima_hora > 8):
+    if (posts_na_ultima_hora > 3):
         saida_arduino = 2
 
-    if (posts_na_ultima_hora > 23):
+    if (posts_na_ultima_hora > 6):
         saida_arduino = 3
 
-    if (posts_na_ultima_hora > 32):
+    if (posts_na_ultima_hora > 8):
         saida_arduino = 4
 
-    if (posts_na_ultima_hora > 42):
+    if (posts_na_ultima_hora > 12):
         saida_arduino = 5
-
-    print "Antes dos ifs: contador = %d" % contador
-    
-    if (contador <= 10):
-        taxa_flickr = 200
-
-    if (contador > 10):
-        taxa_flickr = 150
-
-    if (contador > 19):
-        taxa_flickr = 100
-
-    if (contador > 40):
-        taxa_flickr = 50
-
-    if (contador >= 90):
-        taxa_flickr = 5
 
     print saida_arduino
 
     twits_tratados = []
+
+    taxa_flickr = 
 
     for twit in twits:
         twits_tratados.append({'type': 'twitter', 'text': twit[1], 'user': twit[0]})
 
     to_pickle = {   'taxa_twitter' : saida_arduino,
                     'taxa_flickr' : taxa_flickr,
-                    'items': twits_tratados + photos_tratadas,                    
+                    'items': twits_tratados,                    
                                             }
 
     pickle.dump(to_pickle, file(str(serie) + ".pickle", 'w'))
     serie += 1
-    time.sleep(30)
+    time.sleep(60)
     
